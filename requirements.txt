@@ -1,0 +1,2 @@
+repype==1.0.2
+scikit-image~=0.25.2
