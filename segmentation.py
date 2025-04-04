@@ -64,10 +64,10 @@ class Unzip(repype.stage.Stage):
         )
      
 
-class Segmentation(repype.stage.Stage):
+class Preprocessing(repype.stage.Stage):
      
     inputs  = ['image']
-    outputs = ['segmentation']
+    outputs = ['preprocessed_image']
 
     def process(
             self,
@@ -76,11 +76,28 @@ class Segmentation(repype.stage.Stage):
             config: repype.config.Config,
             status: Optional[repype.status.Status] = None,
         ) -> PipelineData:
-        image = skimage.filters.gaussian(image, sigma = config.get('sigma', 1.))
-        threshold = skimage.filters.threshold_otsu(image)
         delay()
         return dict(
-            segmentation = skimage.util.img_as_ubyte(image > threshold)
+            preprocessed_image = skimage.filters.gaussian(image, sigma = config.get('sigma', 1.))
+        )
+     
+
+class Segmentation(repype.stage.Stage):
+     
+    inputs  = ['preprocessed_image']
+    outputs = ['segmentation']
+
+    def process(
+            self,
+            preprocessed_image,
+            pipeline: repype.pipeline.Pipeline,
+            config: repype.config.Config,
+            status: Optional[repype.status.Status] = None,
+        ) -> PipelineData:
+        threshold = skimage.filters.threshold_otsu(preprocessed_image)
+        delay()
+        return dict(
+            segmentation = skimage.util.img_as_ubyte(preprocessed_image > threshold)
         )
     
 

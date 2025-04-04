@@ -3,6 +3,7 @@ runnable: true
 pipeline:
   - segmentation.Download
   - segmentation.Unzip
+  - segmentation.Preprocessing
   - segmentation.Segmentation
   - segmentation.Output
 
