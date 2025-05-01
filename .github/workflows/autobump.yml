@@ -10,4 +10,4 @@ jobs:
     name: Autobump
     uses: BMCV/github-workflows/.github/workflows/autobump-default.yml@main
     with:
-      branch: develop
+      branch: master
